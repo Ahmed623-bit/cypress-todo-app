@@ -37,10 +37,7 @@ export default function TodoApp() {
             >
               {task.title}
             </span>
-            {/* <button onClick={() => deleteTask(task.id)}>❌</button> */}
-            {/* عمداً عطل الزر */}
-<button onClick={() => console.log('delete disabled')}>❌</button>
-
+            <button onClick={() => deleteTask(task.id)}>❌</button>
           </li>
         ))}
       </ul>
