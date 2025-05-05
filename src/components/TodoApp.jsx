@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import '../css/TodoApp.css';
 
 export default function TodoApp() {
   const [tasks, setTasks] = useState([]);
@@ -16,23 +17,27 @@ export default function TodoApp() {
   };
 
   const toggleTask = (id) => {
-    setTasks(tasks.map(task => task.id === id ? { ...task, done: !task.done } : task));
+    setTasks(tasks.map(task =>
+      task.id === id ? { ...task, done: !task.done } : task
+    ));
   };
 
   return (
-    <div>
+    <div className="todo-container">
       <h1>Todo List</h1>
-      <input
-        placeholder="Add task"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-      />
-      <button onClick={addTask}>Add+</button>
+      <div className="todo-input-area">
+        <input
+          placeholder="Add task"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+        />
+        <button onClick={addTask}>Add+</button>
+      </div>
       <ul>
         {tasks.map(task => (
           <li key={task.id}>
             <span
-              style={{ textDecoration: task.done ? 'line-through' : 'none', cursor: 'pointer' }}
+              className={task.done ? 'done' : ''}
               onClick={() => toggleTask(task.id)}
             >
               {task.title}
