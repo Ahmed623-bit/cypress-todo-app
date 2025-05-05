@@ -1,34 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../css/TodoApp.css';
 
 export default function TodoApp() {
   const [tasks, setTasks] = useState([]);
   const [input, setInput] = useState('');
-  const [filter, setFilter] = useState('all'); // all, active, completed
+
+  // تأكد من تحميل المهام من localStorage عند بداية تحميل التطبيق
+  useEffect(() => {
+    const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    setTasks(savedTasks);
+  }, []);
+
+  // حفظ المهام في localStorage عند التغيير
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks]);
 
   const addTask = () => {
     if (input.trim()) {
-      setTasks([...tasks, { id: Date.now(), title: input, done: false }]);
+      const newTask = { id: Date.now(), title: input, done: false };
+      const updatedTasks = [...tasks, newTask];
+      setTasks(updatedTasks);
       setInput('');
     }
   };
 
   const deleteTask = (id) => {
-    setTasks(tasks.filter(task => task.id !== id));
+    const updatedTasks = tasks.filter(task => task.id !== id);
+    setTasks(updatedTasks);
   };
 
   const toggleTask = (id) => {
-    setTasks(tasks.map(task =>
+    const updatedTasks = tasks.map(task =>
       task.id === id ? { ...task, done: !task.done } : task
-    ));
+    );
+    setTasks(updatedTasks);
   };
-
-  const filteredTasks = tasks.filter(task => {
-    if (filter === 'all') return true;
-    if (filter === 'completed') return task.done;
-    if (filter === 'active') return !task.done;
-    return true;
-  });
 
   return (
     <div className="todo-container">
@@ -41,13 +48,8 @@ export default function TodoApp() {
         />
         <button onClick={addTask}>Add+</button>
       </div>
-      <div className="todo-filters">
-        <button onClick={() => setFilter('all')}>All</button>
-        <button onClick={() => setFilter('active')}>Active</button>
-        <button onClick={() => setFilter('completed')}>Completed</button>
-      </div>
       <ul>
-        {filteredTasks.map(task => (
+        {tasks.map(task => (
           <li key={task.id}>
             <span
               className={task.done ? 'done' : ''}
