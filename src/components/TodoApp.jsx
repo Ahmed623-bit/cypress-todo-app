@@ -27,7 +27,7 @@ export default function TodoApp() {
         value={input}
         onChange={(e) => setInput(e.target.value)}
       />
-      <button onClick={addTask}>Add</button>
+      <button onClick={addTask}>Add+</button>
       <ul>
         {tasks.map(task => (
           <li key={task.id}>
