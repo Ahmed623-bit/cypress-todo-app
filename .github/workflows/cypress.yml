@@ -1,0 +1,39 @@
+name: Cypress Tests
+
+on:
+  push:
+    branches:
+      - main   # أو اسم الفرع الذي تستخدمه
+  pull_request:
+    branches:
+      - main   # أو اسم الفرع الذي تستخدمه
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'   # أو أي إصدار تستخدمه
+
+      # Install dependencies
+      - name: Install dependencies
+        run: |
+          npm install
+
+      # Install Cypress
+      - name: Install Cypress
+        run: |
+          npm install cypress --save-dev
+
+      # Run Cypress tests
+      - name: Run Cypress tests
+        run: |
+          npx cypress run
