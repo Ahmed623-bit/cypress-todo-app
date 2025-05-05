@@ -21,7 +21,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "16" # أو أي إصدار تستخدمه
+          node-version: "16"
 
       # Install dependencies
       - name: Install dependencies
@@ -33,12 +33,17 @@ jobs:
         run: |
           npm install cypress --save-dev
 
-      # Start the server in the background
+      # Start the app in the background
       - name: Start the app
         run: |
-          npm start &
+          npm run start & # تأكد من استخدام هذا إذا كان هذا هو الأمر الصحيح لتشغيل التطبيق
         env:
           CI: true
+
+      # Wait for the app to be ready
+      - name: Wait for server to start
+        run: |
+          sleep 10 # الانتظار لمدة 10 ثواني حتى يبدأ الخادم في العمل
 
       # Run Cypress tests
       - name: Run Cypress tests
