@@ -21,31 +21,23 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "16"
+          node-version: "18"
 
       # Install dependencies
       - name: Install dependencies
-        run: |
-          npm install
+        run: npm install
 
-      # Install Cypress
-      - name: Install Cypress
-        run: |
-          npm install cypress --save-dev
-
-      # Start the app in the background
-      - name: Start the app
-        run: |
-          npm run start & # تأكد من استخدام هذا إذا كان هذا هو الأمر الصحيح لتشغيل التطبيق
+      # Start the application server
+      - name: Start application server
+        run: npm start &
         env:
+          PORT: 3000
           CI: true
 
-      # Wait for the app to be ready
-      - name: Wait for server to start
-        run: |
-          sleep 10 # الانتظار لمدة 10 ثواني حتى يبدأ الخادم في العمل
+      # Wait for the server to be ready
+      - name: Wait for server to be ready
+        run: npx wait-on http://localhost:3000
 
       # Run Cypress tests
       - name: Run Cypress tests
-        run: |
-          npx cypress run
+        run: npx cypress run

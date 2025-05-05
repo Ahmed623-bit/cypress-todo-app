@@ -1,31 +1,37 @@
-/// <reference types="cypress" />
-
-// Ensure Cypress is installed and configured
-
 describe('Todo App', () => {
+  const task = 'Task to Delete';
+
   beforeEach(() => {
-    // eslint-disable-next-line no-undef
-    cy.visit('http://localhost:3000');
+    // ما في داعي لكتابة العنوان كامل لأنو موجود في baseUrl
+    cy.visit('/');
+
+    // أضف مهمة جديدة
+    cy.get('input[placeholder="Add task"]').type(task);
+    cy.contains('Add').click();
+
+    // تأكد من ظهور المهمة
+    cy.contains(task).should('be.visible');
   });
 
-  it('adds a new task', () => {
-    cy.get('input[placeholder="Add task"]').type('Learn Cypress');
-    cy.contains('Add').click();
-    cy.contains('Learn Cypress').should('exist');
+  it('adds a task', () => {
+    cy.contains(task).should('exist');
   });
 
-  it('marks task as done', () => {
-    cy.get('input[placeholder="Add task"]').type('Test done task');
-    cy.contains('Add').click();
-    cy.contains('Test done task').click();
-    cy.contains('Test done task')
-      .should('have.css', 'text-decoration-line', 'line-through');
+  it('toggles a task', () => {
+    cy.contains(task).click();
+    cy.contains(task).should('have.css', 'text-decoration').and('include', 'line-through');
+
+    // إلغاء التحديد
+    cy.contains(task).click();
+    cy.contains(task).should('have.css', 'text-decoration').and('not.include', 'line-through');
   });
 
-  it.only('deletes a task', () => {
-    cy.get('input[placeholder="Add task"]').type('Delete me');
-    cy.contains('Add').click();
-    cy.contains('Delete me').parent().find('button').click();
-    cy.contains('Delete me').should('not.exist');
+  it('deletes a task', () => {
+    cy.contains(task)
+      .parents('li')
+      .find('button') // هذا الزر هو زر الحذف ❌
+      .click();
+
+    cy.contains(task).should('not.exist');
   });
 });
