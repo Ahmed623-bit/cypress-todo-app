@@ -3,10 +3,10 @@ name: Cypress Tests
 on:
   push:
     branches:
-      - main   # أو اسم الفرع الذي تستخدمه
+      - main # أو اسم الفرع الذي تستخدمه
   pull_request:
     branches:
-      - main   # أو اسم الفرع الذي تستخدمه
+      - main # أو اسم الفرع الذي تستخدمه
 
 jobs:
   cypress-run:
@@ -21,7 +21,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'   # أو أي إصدار تستخدمه
+          node-version: "16" # أو أي إصدار تستخدمه
 
       # Install dependencies
       - name: Install dependencies
