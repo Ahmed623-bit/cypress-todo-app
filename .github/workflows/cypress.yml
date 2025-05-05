@@ -3,10 +3,10 @@ name: Cypress Tests
 on:
   push:
     branches:
-      - main # أو اسم الفرع الذي تستخدمه
+      - main
   pull_request:
     branches:
-      - main # أو اسم الفرع الذي تستخدمه
+      - main
 
 jobs:
   cypress-run:
@@ -32,6 +32,13 @@ jobs:
       - name: Install Cypress
         run: |
           npm install cypress --save-dev
+
+      # Start the server in the background
+      - name: Start the app
+        run: |
+          npm start &
+        env:
+          CI: true
 
       # Run Cypress tests
       - name: Run Cypress tests
