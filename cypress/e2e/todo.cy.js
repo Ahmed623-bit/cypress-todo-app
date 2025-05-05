@@ -34,4 +34,18 @@ describe('Todo App', () => {
 
     cy.contains(task).should('not.exist');
   });
+  it('does not add an empty task', () => {
+    // تأكد من أن عدد المهام الحالي
+    cy.get('li').then($listBefore => {
+      const countBefore = $listBefore.length;
+
+      // حاول تضيف مهمة فاضية
+      cy.get('input[placeholder="Add task"]').clear();
+      cy.contains('Add').click();
+
+      // تأكد أن عدد المهام ما تغير
+      cy.get('li').should('have.length', countBefore);
+    });
+  });
+
 });
